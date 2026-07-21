@@ -15,7 +15,7 @@ class WeatherController extends Controller
      */
     public function show(Request $request): Response
     {
-        // The city comes from the query string, such as ?city=London.
+        // The city comes from the query string, such as ?city=Gulu.
         $city = trim((string) $request->query('city', ''));
         $weather = null;
         $error = null;
