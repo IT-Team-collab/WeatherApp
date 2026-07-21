@@ -38,7 +38,17 @@ class WeatherController extends Controller
                     $forecastResponse = Http::get('https://api.open-meteo.com/v1/forecast', [
                         'latitude' => $geoData['latitude'],
                         'longitude' => $geoData['longitude'],
-                        'current' => 'temperature_2m,weather_code',
+                        // Request the current values for the variables selected in the UI
+                        'current' => implode(',', [
+                            'temperature_2m',
+                            'relativehumidity_2m',
+                            'dewpoint_2m',
+                            'rain',
+                            'showers',
+                            'vapour_pressure_deficit',
+                            'windspeed_180m',
+                            'weather_code',
+                        ]),
                         'timezone' => 'auto',
                     ]);
 
@@ -50,6 +60,12 @@ class WeatherController extends Controller
                         'city' => $geoData['name'],
                         'country' => $geoData['country'],
                         'temperature' => $forecastData['temperature_2m'] ?? null,
+                        'relative_humidity' => $forecastData['relativehumidity_2m'] ?? null,
+                        'dewpoint' => $forecastData['dewpoint_2m'] ?? null,
+                        'rain' => $forecastData['rain'] ?? null,
+                        'showers' => $forecastData['showers'] ?? null,
+                        'vapour_pressure_deficit' => $forecastData['vapour_pressure_deficit'] ?? null,
+                        'windspeed_180m' => $forecastData['windspeed_180m'] ?? null,
                         'condition' => $this->weatherCodeToText($forecastData['weather_code'] ?? null),
                     ];
                 } else {

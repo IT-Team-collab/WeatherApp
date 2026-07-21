@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-// import { home } from '@/routes';
+// import { weather } from '@/routes';
 
 // These props come from the Laravel controller.
 const props = defineProps<{
@@ -9,6 +9,12 @@ const props = defineProps<{
         city: string;
         country: string;
         temperature: number | null;
+        relative_humidity: number | null;
+        dewpoint: number | null;
+        rain: number | null;
+        showers: number | null;
+        vapour_pressure_deficit: number | null;
+        windspeed_180m: number | null;
         condition: string;
     } | null;
     error: string | null;
@@ -35,7 +41,7 @@ const searchCity = (event: Event) => {
                     <p class="mb-2 text-sm uppercase tracking-[0.3em] text-sky-400">Weather app</p>
                     <h1 class="text-3xl font-semibold">Search for a city</h1>
                 </div>
-                <Link :href="home()" class="text-sm text-slate-400 hover:text-white">
+                <Link :href="weather()" class="text-sm text-slate-400 hover:text-white">
                     Back home
                 </Link>
             </div> -->
@@ -69,12 +75,34 @@ const searchCity = (event: Event) => {
                 </h2>
                 <p class="mt-4 text-5xl font-bold">{{ weather.temperature }}°C</p>
                 <p class="mt-2 text-lg text-slate-300">{{ weather.condition }}</p>
-            </div>
 
-            <!-- This is shown when no search has happened yet. -->
-            <div v-else class="rounded-xl border border-dashed border-slate-700 p-6 text-slate-400">
-                Type a city name and press search to see the weather.
+                    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        <div class="rounded-2xl border border-slate-800 bg-slate-900 p-4">
+                            <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Humidity</p>
+                            <p class="mt-2 text-xl font-semibold">{{ weather.relative_humidity }}%</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-800 bg-slate-900 p-4">
+                            <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Dewpoint</p>
+                            <p class="mt-2 text-xl font-semibold">{{ weather.dewpoint }}°C</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-800 bg-slate-900 p-4">
+                            <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Rain</p>
+                            <p class="mt-2 text-xl font-semibold">{{ weather.rain }} mm</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-800 bg-slate-900 p-4">
+                            <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Showers</p>
+                            <p class="mt-2 text-xl font-semibold">{{ weather.showers }} mm</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-800 bg-slate-900 p-4">
+                            <p class="text-sm uppercase tracking-[0.3em] text-slate-500">VPD</p>
+                            <p class="mt-2 text-xl font-semibold">{{ weather.vapour_pressure_deficit }} hPa</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-800 bg-slate-900 p-4">
+                            <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Wind (180m)</p>
+                            <p class="mt-2 text-xl font-semibold">{{ weather.windspeed_180m }} km/h</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
     </div>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import { home } from '@/routes';
+import { weather } from '@/routes';
 
 const page = usePage();
 const name = page.props.name;
@@ -21,7 +21,7 @@ defineProps<{
         >
             <div class="absolute inset-0 bg-zinc-900" />
             <Link
-                :href="home()"
+                :href="weather()"
                 class="relative z-20 flex items-center text-lg font-medium"
             >
                 <AppLogoIcon class="mr-2 size-8 fill-current text-white" />
@@ -45,3 +45,19 @@ defineProps<{
         </div>
     </div>
 </template>
+<?php
+
+use App\Http\Controllers\WeatherController;
+use Illuminate\Support\Facades\Route;
+
+// Route::inertia('/', 'Welcome')->name('home');
+Route::redirect('/', '/weather');
+
+// This route points to the weather controller, which will fetch data from the API.
+Route::get('/weather', [WeatherController::class, 'show'])->name('weather');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+});
+
+require __DIR__.'/settings.php';
